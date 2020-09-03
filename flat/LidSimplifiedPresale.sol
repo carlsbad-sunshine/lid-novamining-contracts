@@ -1,6 +1,5 @@
 pragma solidity 0.5.16;
 
-
 /**
  * @dev Interface of the ERC20 standard as defined in the EIP. Does not include
  * the optional functions; to access them see {ERC20Detailed}.
@@ -910,12 +909,347 @@ contract LidSimplifiedPresaleRedeemer is Initializable, Ownable {
 }
 
 
+interface IStakeHandler {
+    function handleStake(address staker, uint stakerDeltaValue, uint stakerFinalValue) external;
+    function handleUnstake(address staker, uint stakerDeltaValue, uint stakerFinalValue) external;
+}
+
+
+interface ILidCertifiableToken {
+    function activateTransfers() external;
+    function activateTax() external;
+    function mint(address account, uint256 amount) external returns (bool);
+    function addMinter(address account) external;
+    function renounceMinter() external;
+    function transfer(address recipient, uint256 amount) external returns (bool);
+    function approve(address spender, uint256 amount) external returns (bool);
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+    function allowance(address owner, address spender) external view returns (uint256);
+    function isMinter(address account) external view returns (bool);
+    function totalSupply() external view returns (uint256);
+    function balanceOf(address account) external view returns (uint256);
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+
+}
+
+
+contract LidStaking is Initializable, Ownable {
+    using BasisPoints for uint;
+    using SafeMath for uint;
+
+    uint256 constant internal DISTRIBUTION_MULTIPLIER = 2 ** 64;
+
+    uint public stakingTaxBP;
+    uint public unstakingTaxBP;
+    ILidCertifiableToken private lidToken;
+
+    mapping(address => uint) public stakeValue;
+    mapping(address => int) public stakerPayouts;
+
+
+    uint public totalDistributions;
+    uint public totalStaked;
+    uint public totalStakers;
+    uint public profitPerShare;
+    uint private emptyStakeTokens; //These are tokens given to the contract when there are no stakers.
+
+    IStakeHandler[] public stakeHandlers;
+    uint public startTime;
+
+    uint public registrationFeeWithReferrer;
+    uint public registrationFeeWithoutReferrer;
+    mapping(address => uint) public accountReferrals;
+    mapping(address => bool) public stakerIsRegistered;
+
+    event OnDistribute(address sender, uint amountSent);
+    event OnStake(address sender, uint amount, uint tax);
+    event OnUnstake(address sender, uint amount, uint tax);
+    event OnReinvest(address sender, uint amount, uint tax);
+    event OnWithdraw(address sender, uint amount);
+
+    modifier onlyLidToken {
+        require(msg.sender == address(lidToken), "Can only be called by LidToken contract.");
+        _;
+    }
+
+    modifier whenStakingActive {
+        require(startTime != 0 && now > startTime, "Staking not yet started.");
+        _;
+    }
+
+    function initialize(
+        uint _stakingTaxBP,
+        uint _ustakingTaxBP,
+        uint _registrationFeeWithReferrer,
+        uint _registrationFeeWithoutReferrer,
+        address owner,
+        ILidCertifiableToken _lidToken
+    ) external initializer {
+        Ownable.initialize(msg.sender);
+        stakingTaxBP = _stakingTaxBP;
+        unstakingTaxBP = _ustakingTaxBP;
+        lidToken = _lidToken;
+        registrationFeeWithReferrer = _registrationFeeWithReferrer;
+        registrationFeeWithoutReferrer = _registrationFeeWithoutReferrer;
+        //Due to issue in oz testing suite, the msg.sender might not be owner
+        _transferOwnership(owner);
+    }
+
+    function registerAndStake(uint amount) public {
+        registerAndStake(amount, address(0x0));
+    }
+
+    function registerAndStake(uint amount, address referrer) public whenStakingActive {
+        require(!stakerIsRegistered[msg.sender], "Staker must not be registered");
+        require(lidToken.balanceOf(msg.sender) >= amount, "Must have enough balance to stake amount");
+        uint finalAmount;
+        if(address(0x0) == referrer) {
+            //No referrer
+            require(amount >= registrationFeeWithoutReferrer, "Must send at least enough LID to pay registration fee.");
+            distribute(registrationFeeWithoutReferrer);
+            finalAmount = amount.sub(registrationFeeWithoutReferrer);
+        } else {
+            //has referrer
+            require(amount >= registrationFeeWithReferrer, "Must send at least enough LID to pay registration fee.");
+            require(lidToken.transferFrom(msg.sender, referrer, registrationFeeWithReferrer), "Stake failed due to failed referral transfer.");
+            accountReferrals[referrer] = accountReferrals[referrer].add(1);
+            finalAmount = amount.sub(registrationFeeWithReferrer);
+        }
+        stakerIsRegistered[msg.sender] = true;
+        stake(finalAmount);
+    }
+
+    function stake(uint amount) public whenStakingActive {
+        require(stakerIsRegistered[msg.sender] == true, "Must be registered to stake.");
+        require(amount >= 1e18, "Must stake at least one LID.");
+        require(lidToken.balanceOf(msg.sender) >= amount, "Cannot stake more LID than you hold unstaked.");
+        if (stakeValue[msg.sender] == 0) totalStakers = totalStakers.add(1);
+        uint tax = _addStake(amount);
+        require(lidToken.transferFrom(msg.sender, address(this), amount), "Stake failed due to failed transfer.");
+        emit OnStake(msg.sender, amount, tax);
+    }
+
+    function unstake(uint amount) external whenStakingActive {
+        require(amount >= 1e18, "Must unstake at least one LID.");
+        require(stakeValue[msg.sender] >= amount, "Cannot unstake more LID than you have staked.");
+        //must withdraw all dividends, to prevent overflows
+        withdraw(dividendsOf(msg.sender));
+        if (stakeValue[msg.sender] == amount) totalStakers = totalStakers.sub(1);
+        totalStaked = totalStaked.sub(amount);
+        stakeValue[msg.sender] = stakeValue[msg.sender].sub(amount);
+
+        uint tax = findTaxAmount(amount, unstakingTaxBP);
+        uint earnings = amount.sub(tax);
+        _increaseProfitPerShare(tax);
+        stakerPayouts[msg.sender] = uintToInt(profitPerShare.mul(stakeValue[msg.sender]));
+
+        for (uint i=0; i < stakeHandlers.length; i++) {
+            stakeHandlers[i].handleUnstake(msg.sender, amount, stakeValue[msg.sender]);
+        }
+
+        require(lidToken.transferFrom(address(this), msg.sender, earnings), "Unstake failed due to failed transfer.");
+        emit OnUnstake(msg.sender, amount, tax);
+    }
+
+    function withdraw(uint amount) public whenStakingActive {
+        require(dividendsOf(msg.sender) >= amount, "Cannot withdraw more dividends than you have earned.");
+        stakerPayouts[msg.sender] = stakerPayouts[msg.sender] + uintToInt(amount.mul(DISTRIBUTION_MULTIPLIER));
+        lidToken.transfer(msg.sender, amount);
+        emit OnWithdraw(msg.sender, amount);
+    }
+
+    function reinvest(uint amount) external whenStakingActive {
+        require(dividendsOf(msg.sender) >= amount, "Cannot reinvest more dividends than you have earned.");
+        uint payout = amount.mul(DISTRIBUTION_MULTIPLIER);
+        stakerPayouts[msg.sender] = stakerPayouts[msg.sender] + uintToInt(payout);
+        uint tax = _addStake(amount);
+        emit OnReinvest(msg.sender, amount, tax);
+    }
+
+    function distribute(uint amount) public {
+        require(lidToken.balanceOf(msg.sender) >= amount, "Cannot distribute more LID than you hold unstaked.");
+        totalDistributions = totalDistributions.add(amount);
+        _increaseProfitPerShare(amount);
+        require(
+            lidToken.transferFrom(msg.sender, address(this), amount),
+            "Distribution failed due to failed transfer."
+        );
+        emit OnDistribute(msg.sender, amount);
+    }
+
+    function handleTaxDistribution(uint amount) external onlyLidToken {
+        totalDistributions = totalDistributions.add(amount);
+        _increaseProfitPerShare(amount);
+        emit OnDistribute(msg.sender, amount);
+    }
+
+    function dividendsOf(address staker) public view returns (uint) {
+        int divPayout = uintToInt(profitPerShare.mul(stakeValue[staker]));
+        require(divPayout >= stakerPayouts[staker], "dividend calc overflow");
+        return uint(divPayout - stakerPayouts[staker])
+            .div(DISTRIBUTION_MULTIPLIER);
+    }
+
+    function findTaxAmount(uint value, uint taxBP) public pure returns (uint) {
+        return value.mulBP(taxBP);
+    }
+
+    function numberStakeHandlersRegistered() external view returns (uint) {
+        return stakeHandlers.length;
+    }
+
+    function registerStakeHandler(IStakeHandler sc) external onlyOwner {
+        stakeHandlers.push(sc);
+    }
+
+    function unregisterStakeHandler(uint index) external onlyOwner {
+        IStakeHandler sc = stakeHandlers[stakeHandlers.length-1];
+        stakeHandlers.pop();
+        stakeHandlers[index] = sc;
+    }
+
+    function setStakingBP(uint valueBP) external onlyOwner {
+        require(valueBP < 10000, "Tax connot be over 100% (10000 BP)");
+        stakingTaxBP = valueBP;
+    }
+
+    function setUnstakingBP(uint valueBP) external onlyOwner {
+        require(valueBP < 10000, "Tax connot be over 100% (10000 BP)");
+        unstakingTaxBP = valueBP;
+    }
+
+    function setStartTime(uint _startTime) external onlyOwner {
+        startTime = _startTime;
+    }
+
+    function setRegistrationFees(uint valueWithReferrer, uint valueWithoutReferrer) external onlyOwner {
+        registrationFeeWithReferrer = valueWithReferrer;
+        registrationFeeWithoutReferrer = valueWithoutReferrer;
+    }
+
+    function uintToInt(uint val) internal pure returns (int) {
+        if (val >= uint(-1).div(2)) {
+            require(false, "Overflow. Cannot convert uint to int.");
+        } else {
+            return int(val);
+        }
+    }
+
+    function _addStake(uint amount) internal returns (uint tax) {
+        tax = findTaxAmount(amount, stakingTaxBP);
+        uint stakeAmount = amount.sub(tax);
+        totalStaked = totalStaked.add(stakeAmount);
+        stakeValue[msg.sender] = stakeValue[msg.sender].add(stakeAmount);
+        for (uint i=0; i < stakeHandlers.length; i++) {
+            stakeHandlers[i].handleStake(msg.sender, stakeAmount, stakeValue[msg.sender]);
+        }
+        uint payout = profitPerShare.mul(stakeAmount);
+        stakerPayouts[msg.sender] = stakerPayouts[msg.sender] + uintToInt(payout);
+        _increaseProfitPerShare(tax);
+    }
+
+    function _increaseProfitPerShare(uint amount) internal {
+        if (totalStaked != 0) {
+            if (emptyStakeTokens != 0) {
+                amount = amount.add(emptyStakeTokens);
+                emptyStakeTokens = 0;
+            }
+            profitPerShare = profitPerShare.add(amount.mul(DISTRIBUTION_MULTIPLIER).div(totalStaked));
+        } else {
+            emptyStakeTokens = emptyStakeTokens.add(amount);
+        }
+    }
+
+}
+
+
+contract LidSimplifiedPresaleAccess is Initializable {
+    using SafeMath for uint;
+    LidStaking private staking;
+
+    uint[24] private decayCurve;
+
+    function initialize(LidStaking _staking) external initializer {
+        staking = _staking;
+        //Precalculated
+        decayCurve = [
+            1000000,
+            750000,
+            562500,
+            421875,
+            316406,
+            237305,
+            177979,
+            133484,
+            100113,
+            75085,
+            56314,
+            42235,
+            31676,
+            23757,
+            17818,
+            13363,
+            10023,
+            7517,
+            5638,
+            4228,
+            3171,
+            2378,
+            1784,
+            0
+        ];
+    }
+
+    function getAccessTime(address account, uint startTime) external view returns (uint accessTime) {
+        uint stakeValue = staking.stakeValue(account);
+        if (stakeValue == 0) return startTime.add(24 hours);
+        if (stakeValue >= decayCurve[0]) return startTime;
+        uint i=0;
+        uint stake2 = decayCurve[0];
+        while (stake2 > stakeValue && i < 24) {
+            i++;
+            stake2 = decayCurve[i];
+        }
+        if (stake2 == stakeValue) return startTime.add(i.add(1).mul(1 hours));
+        return interpolate(
+            startTime.add(i.mul(1 hours)),
+            startTime.add(i.add(1).mul(1 hours)),
+            decayCurve[i.sub(1)],
+            decayCurve[i],
+            stakeValue
+        );
+    }
+
+    //Returns the linearly interpolated time between two timeX/stakeX points based on a stakeValue.
+    function interpolate(
+        uint time1,
+        uint time2,
+        uint stake1,
+        uint stake2,
+        uint stakeValue
+    ) public pure returns (uint) {
+        require(stakeValue > stake2, "stakeValue must be gt stake2");
+        require(stakeValue < stake1, "stakeValue must be lt stake1");
+        require(time2 > time1, "time2 must be after time1");
+        return time1.mul(
+            stakeValue.sub(stake2)
+        ).add(
+            time2.mul(
+                stake1.sub(stakeValue)
+            )
+        ).div(
+            stake1.sub(stake2)
+        );
+    }
+}
+
+
 contract LidSimplifiedPresale is Initializable, Ownable, ReentrancyGuard, Pausable {
     using BasisPoints for uint;
     using SafeMath for uint;
 
     uint public maxBuyPerAddress;
-    uint public maxBuyWithoutWhitelisting;
 
     uint public referralBP;
 
@@ -940,13 +1274,17 @@ contract LidSimplifiedPresale is Initializable, Ownable, ReentrancyGuard, Pausab
     IUniswapV2Router01 private uniswapRouter;
     LidSimplifiedPresaleTimer private timer;
     LidSimplifiedPresaleRedeemer private redeemer;
+    LidSimplifiedPresaleAccess private access;
     address payable private lidFund;
 
     mapping(address => uint) public accountEthDeposit;
-    mapping(address => bool) public whitelist;
     mapping(address => uint) public earnedReferrals;
 
     mapping(address => uint) public referralCounts;
+
+    mapping(address => uint) public refundedEth;
+
+    bool public isRefunding;
 
     modifier whenPresaleActive {
         require(timer.isStarted(), "Presale not yet started.");
@@ -962,7 +1300,6 @@ contract LidSimplifiedPresale is Initializable, Ownable, ReentrancyGuard, Pausab
 
     function initialize(
         uint _maxBuyPerAddress,
-        uint _maxBuyWithoutWhitelisting,
         uint _uniswapEthBP,
         uint _lidEthBP,
         uint _referralBP,
@@ -970,6 +1307,7 @@ contract LidSimplifiedPresale is Initializable, Ownable, ReentrancyGuard, Pausab
         address owner,
         LidSimplifiedPresaleTimer _timer,
         LidSimplifiedPresaleRedeemer _redeemer,
+        LidSimplifiedPresaleAccess _access,
         IERC20 _token,
         IUniswapV2Router01 _uniswapRouter,
         address payable _lidFund
@@ -981,10 +1319,10 @@ contract LidSimplifiedPresale is Initializable, Ownable, ReentrancyGuard, Pausab
         token = _token;
         timer = _timer;
         redeemer = _redeemer;
+        access = _access;
         lidFund = _lidFund;
 
         maxBuyPerAddress = _maxBuyPerAddress;
-        maxBuyWithoutWhitelisting = _maxBuyWithoutWhitelisting;
 
         uniswapEthBP = _uniswapEthBP;
         lidEthBP = _lidEthBP;
@@ -1027,6 +1365,7 @@ contract LidSimplifiedPresale is Initializable, Ownable, ReentrancyGuard, Pausab
     }
 
     function sendToUniswap() external whenPresaleFinished nonReentrant whenNotPaused {
+        require(msg.sender == tx.origin, "Sender must be origin - no contract calls.");
         require(tokenPools.length > 0, "Must have set token pools");
         require(!hasSentToUniswap, "Has already sent to Uniswap.");
         finalEndTime = now;
@@ -1061,16 +1400,6 @@ contract LidSimplifiedPresale is Initializable, Ownable, ReentrancyGuard, Pausab
         receiver.transfer(amount);
     }
 
-    function setWhitelist(address account, bool value) external onlyOwner whenNotPaused {
-        whitelist[account] = value;
-    }
-
-    function setWhitelistForAll(address[] calldata account, bool value) external onlyOwner whenNotPaused {
-        for (uint i=0; i < account.length; i++) {
-            whitelist[account[i]] = value;
-        }
-    }
-
     function redeem() external whenPresaleFinished whenNotPaused {
         require(hasSentToUniswap, "Must have sent to Uniswap before any redeems.");
         uint claimable = redeemer.calculateReedemable(msg.sender, finalEndTime, totalTokens.mulBP(presaleTokenBP));
@@ -1078,7 +1407,33 @@ contract LidSimplifiedPresale is Initializable, Ownable, ReentrancyGuard, Pausab
         token.transfer(msg.sender, claimable);
     }
 
+    function updateUniswapBP(uint bp) external onlyOwner {
+        uniswapEthBP = bp;
+    }
+
+    function startRefund() external onlyOwner whenPaused {
+        //TODO: Automatically start refund after timer is passed for softcap reach
+        isRefunding = true;
+    }
+
+    function topUpRefundFund() external payable whenPaused {
+        require(isRefunding, "Refunds not active");
+    }
+
+    function claimRefund(address payable account) external whenPaused {
+        require(isRefunding, "Refunds not active");
+        uint refundAmt = getRefundableEth(account);
+        require(refundAmt > 0, "Nothing to refund");
+        refundedEth[account] = refundedEth[account].add(refundAmt);
+        account.transfer(refundAmt);
+    }
+
+    function removeTokens(address account) external onlyOwner {
+        token.transfer(account, token.balanceOf(address(this)));
+    }
+
     function deposit(address payable referrer) public payable whenPresaleActive nonReentrant whenNotPaused {
+        require(now >= access.getAccessTime(msg.sender, timer.startTime()), "Time must be at least access time.");
         uint endTime = timer.updateEndTime();
         require(endTime == 0 || endTime >= now, "Endtime past.");
         require(msg.sender != referrer, "Sender cannot be referrer.");
@@ -1086,17 +1441,10 @@ contract LidSimplifiedPresale is Initializable, Ownable, ReentrancyGuard, Pausab
         uint fee = msg.value.mulBP(referralBP);
         //Remove fee in case final purchase needed to end sale without dust errors
         if (msg.value < 0.01 ether) fee = 0;
-        if (whitelist[msg.sender]) {
-            require(
-                accountCurrentDeposit.add(msg.value) <= getMaxWhitelistedDeposit(),
-                "Deposit exceeds max buy per address for whitelisted addresses."
-            );
-        } else {
-            require(
-                accountCurrentDeposit.add(msg.value) <= maxBuyWithoutWhitelisting,
-                "Deposit exceeds max buy per address for non-whitelisted addresses."
-            );
-        }
+        require(
+            accountCurrentDeposit.add(msg.value) <= getMaxWhitelistedDeposit(),
+            "Deposit exceeds max buy per address for whitelisted addresses."
+        );
         require(address(this).balance.sub(fee) <= hardcap, "Cannot deposit more than hardcap.");
 
         redeemer.setDeposit(msg.sender, msg.value.sub(fee), address(this).balance.sub(fee));
@@ -1110,11 +1458,20 @@ contract LidSimplifiedPresale is Initializable, Ownable, ReentrancyGuard, Pausab
         }
     }
 
+    function getRefundableEth(address account) public view returns (uint) {
+        if (!isRefunding) return 0;
+        //TODO: use account eth deposits insted once switched to referral withdraw pattern
+        return redeemer.accountDeposits(account)
+            .divBP(10000 - referralBP)
+            .sub(refundedEth[account]);
+    }
+
     function getMaxWhitelistedDeposit() public view returns (uint) {
         return maxBuyPerAddress;
     }
 
     function isPresaleEnded() public view returns (bool) {
+        if (isRefunding) return true;
         uint endTime =  timer.endTime();
         if (hasSentToUniswap) return true;
         return (

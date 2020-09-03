@@ -19,7 +19,6 @@ async function initialize(accounts,networkName) {
 
   await presale.initialize(
       presaleParams.maxBuyPerAddress,
-      presaleParams.maxBuyWithoutWhitelisting,
       presaleParams.uniswapEthBP,
       presaleParams.lidEthBP,
       presaleParams.referralBP,
@@ -27,6 +26,7 @@ async function initialize(accounts,networkName) {
       owner,
       timer.address,
       redeemer.address,
+      presaleParams.access,
       presaleParams.token,
       presaleParams.uniswapRouter,
       presaleParams.lidFund,

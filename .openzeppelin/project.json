@@ -1,0 +1,21 @@
+{
+  "manifestVersion": "2.2",
+  "contracts": {
+    "LidSimplifiedPresale": "LidSimplifiedPresale",
+    "LidSimplifiedPresaleAccess": "LidSimplifiedPresaleAccess",
+    "LidSimplifiedPresaleRedeemer": "LidSimplifiedPresaleRedeemer",
+    "LidSimplifiedPresaleTimer": "LidSimplifiedPresaleTimer",
+    "LidTimeLock": "LidTimeLock",
+    "LidTimeLockEcosystem": "LidTimeLock",
+    "LidTimeLockFee": "LidTimeLock"
+  },
+  "dependencies": {},
+  "name": "lid-simplified-presale-contracts",
+  "version": "1.0.0",
+  "compiler": {
+    "manager": "truffle",
+    "compilerSettings": {
+      "optimizer": {}
+    }
+  }
+}

@@ -50,6 +50,10 @@ contract LidSimplifiedPresale is Initializable, Ownable, ReentrancyGuard, Pausab
 
     mapping(address => uint) public referralCounts;
 
+    mapping(address => uint) public refundedEth;
+
+    bool public isRefunding;
+
     modifier whenPresaleActive {
         require(timer.isStarted(), "Presale not yet started.");
         require(!isPresaleEnded(), "Presale has ended.");
@@ -171,6 +175,31 @@ contract LidSimplifiedPresale is Initializable, Ownable, ReentrancyGuard, Pausab
         token.transfer(msg.sender, claimable);
     }
 
+    function updateUniswapBP(uint bp) external onlyOwner {
+        uniswapEthBP = bp;
+    }
+
+    function startRefund() external onlyOwner whenPaused {
+        //TODO: Automatically start refund after timer is passed for softcap reach
+        isRefunding = true;
+    }
+
+    function topUpRefundFund() external payable whenPaused {
+        require(isRefunding, "Refunds not active");
+    }
+
+    function claimRefund(address payable account) external whenPaused {
+        require(isRefunding, "Refunds not active");
+        uint refundAmt = getRefundableEth(account);
+        require(refundAmt > 0, "Nothing to refund");
+        refundedEth[account] = refundedEth[account].add(refundAmt);
+        account.transfer(refundAmt);
+    }
+
+    function removeTokens(address account) external onlyOwner {
+        token.transfer(account, token.balanceOf(address(this)));
+    }
+
     function deposit(address payable referrer) public payable whenPresaleActive nonReentrant whenNotPaused {
         require(now >= access.getAccessTime(msg.sender, timer.startTime()), "Time must be at least access time.");
         uint endTime = timer.updateEndTime();
@@ -197,11 +226,20 @@ contract LidSimplifiedPresale is Initializable, Ownable, ReentrancyGuard, Pausab
         }
     }
 
+    function getRefundableEth(address account) public view returns (uint) {
+        if (!isRefunding) return 0;
+        //TODO: use account eth deposits insted once switched to referral withdraw pattern
+        return redeemer.accountDeposits(account)
+            .divBP(10000 - referralBP)
+            .sub(refundedEth[account]);
+    }
+
     function getMaxWhitelistedDeposit() public view returns (uint) {
         return maxBuyPerAddress;
     }
 
     function isPresaleEnded() public view returns (bool) {
+        if (isRefunding) return true;
         uint endTime =  timer.endTime();
         if (hasSentToUniswap) return true;
         return (

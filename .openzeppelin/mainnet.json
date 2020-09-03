@@ -1,0 +1,1245 @@
+{
+  "contracts": {
+    "LidSimplifiedPresaleRedeemer": {
+      "address": "0x800933440Fe46A5f74CC3F88165bf0727664e0e8",
+      "constructorCode": "608060405261140a806100136000396000f3fe",
+      "bodyBytecodeHash": "457162c5d940018e22c51d7c7a1476fd89697c5c269f6c71af1ed8f4d346152d",
+      "localBytecodeHash": "e7f483e19245674ad3f5c7c87029f3ac2be270ce79e3c17c313e638a04312f1f",
+      "deployedBytecodeHash": "e7f483e19245674ad3f5c7c87029f3ac2be270ce79e3c17c313e638a04312f1f",
+      "types": {
+        "t_bool": {
+          "id": "t_bool",
+          "kind": "elementary",
+          "label": "bool"
+        },
+        "t_uint256": {
+          "id": "t_uint256",
+          "kind": "elementary",
+          "label": "uint256"
+        },
+        "t_array:50<t_uint256>": {
+          "id": "t_array:50<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "50",
+          "kind": "array",
+          "label": "uint256[50]"
+        },
+        "t_address": {
+          "id": "t_address",
+          "kind": "elementary",
+          "label": "address"
+        },
+        "t_array:dyn<t_uint256>": {
+          "id": "t_array:dyn<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "dyn",
+          "kind": "array",
+          "label": "uint256[]"
+        },
+        "t_mapping<t_uint256>": {
+          "id": "t_mapping<t_uint256>",
+          "valueType": "t_uint256",
+          "label": "mapping(key => uint256)",
+          "kind": "mapping"
+        }
+      },
+      "storage": [
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initialized",
+          "astId": 8135,
+          "type": "t_bool",
+          "src": "757:24:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initializing",
+          "astId": 8137,
+          "type": "t_bool",
+          "src": "876:25:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "______gap",
+          "astId": 8199,
+          "type": "t_array:50<t_uint256>",
+          "src": "1982:29:35"
+        },
+        {
+          "contract": "Ownable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\ownership\\Ownable.sol",
+          "label": "_owner",
+          "astId": 7495,
+          "type": "t_address",
+          "src": "526:22:31"
+        },
+        {
+          "contract": "Ownable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\ownership\\Ownable.sol",
+          "label": "______gap",
+          "astId": 7608,
+          "type": "t_array:50<t_uint256>",
+          "src": "2471:29:31"
+        },
+        {
+          "contract": "LidSimplifiedPresaleRedeemer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleRedeemer.sol",
+          "label": "redeemBP",
+          "astId": 1006,
+          "type": "t_uint256",
+          "src": "712:20:2"
+        },
+        {
+          "contract": "LidSimplifiedPresaleRedeemer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleRedeemer.sol",
+          "label": "redeemInterval",
+          "astId": 1008,
+          "type": "t_uint256",
+          "src": "739:26:2"
+        },
+        {
+          "contract": "LidSimplifiedPresaleRedeemer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleRedeemer.sol",
+          "label": "bonusRangeStart",
+          "astId": 1011,
+          "type": "t_array:dyn<t_uint256>",
+          "src": "774:29:2"
+        },
+        {
+          "contract": "LidSimplifiedPresaleRedeemer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleRedeemer.sol",
+          "label": "bonusRangeBP",
+          "astId": 1014,
+          "type": "t_array:dyn<t_uint256>",
+          "src": "810:26:2"
+        },
+        {
+          "contract": "LidSimplifiedPresaleRedeemer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleRedeemer.sol",
+          "label": "currentBonusIndex",
+          "astId": 1016,
+          "type": "t_uint256",
+          "src": "843:29:2"
+        },
+        {
+          "contract": "LidSimplifiedPresaleRedeemer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleRedeemer.sol",
+          "label": "totalShares",
+          "astId": 1018,
+          "type": "t_uint256",
+          "src": "881:23:2"
+        },
+        {
+          "contract": "LidSimplifiedPresaleRedeemer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleRedeemer.sol",
+          "label": "totalDepositors",
+          "astId": 1020,
+          "type": "t_uint256",
+          "src": "911:27:2"
+        },
+        {
+          "contract": "LidSimplifiedPresaleRedeemer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleRedeemer.sol",
+          "label": "accountDeposits",
+          "astId": 1024,
+          "type": "t_mapping<t_uint256>",
+          "src": "945:47:2"
+        },
+        {
+          "contract": "LidSimplifiedPresaleRedeemer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleRedeemer.sol",
+          "label": "accountShares",
+          "astId": 1028,
+          "type": "t_mapping<t_uint256>",
+          "src": "999:45:2"
+        },
+        {
+          "contract": "LidSimplifiedPresaleRedeemer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleRedeemer.sol",
+          "label": "accountClaimedTokens",
+          "astId": 1032,
+          "type": "t_mapping<t_uint256>",
+          "src": "1051:52:2"
+        },
+        {
+          "contract": "LidSimplifiedPresaleRedeemer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleRedeemer.sol",
+          "label": "presale",
+          "astId": 1034,
+          "type": "t_address",
+          "src": "1112:23:2"
+        }
+      ],
+      "warnings": {
+        "hasConstructor": false,
+        "hasSelfDestruct": false,
+        "hasDelegateCall": false,
+        "hasInitialValuesInDeclarations": false,
+        "uninitializedBaseContracts": []
+      }
+    },
+    "LidSimplifiedPresale": {
+      "address": "0xc34ee85DAF51bc7ac9b6CBBb7882B41b7385Fa01",
+      "constructorCode": "60806040526139a9806100136000396000f3fe",
+      "bodyBytecodeHash": "e9982f14e222e819316919cec890a61420e050e319824a6a04ceff41b5b82167",
+      "localBytecodeHash": "02a5f5bf351a161e3aab8cc2086c1c5ac597783b3ace08216106f826139db4de",
+      "deployedBytecodeHash": "02a5f5bf351a161e3aab8cc2086c1c5ac597783b3ace08216106f826139db4de",
+      "types": {
+        "t_bool": {
+          "id": "t_bool",
+          "kind": "elementary",
+          "label": "bool"
+        },
+        "t_uint256": {
+          "id": "t_uint256",
+          "kind": "elementary",
+          "label": "uint256"
+        },
+        "t_array:50<t_uint256>": {
+          "id": "t_array:50<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "50",
+          "kind": "array",
+          "label": "uint256[50]"
+        },
+        "t_address": {
+          "id": "t_address",
+          "kind": "elementary",
+          "label": "address"
+        },
+        "t_struct<Roles.Role>": {
+          "id": "t_struct<Roles.Role>",
+          "kind": "struct",
+          "label": "Roles.Role",
+          "members": [
+            {
+              "label": "bearer",
+              "astId": 7131,
+              "type": "t_mapping<t_bool>",
+              "src": "150:32:27"
+            }
+          ]
+        },
+        "t_mapping<t_bool>": {
+          "id": "t_mapping<t_bool>",
+          "valueType": "t_bool",
+          "label": "mapping(key => bool)",
+          "kind": "mapping"
+        },
+        "t_array:dyn<t_address>": {
+          "id": "t_array:dyn<t_address>",
+          "valueType": "t_address",
+          "length": "dyn",
+          "kind": "array",
+          "label": "address[]"
+        },
+        "t_array:dyn<t_uint256>": {
+          "id": "t_array:dyn<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "dyn",
+          "kind": "array",
+          "label": "uint256[]"
+        },
+        "t_address_payable": {
+          "id": "t_address_payable",
+          "kind": "elementary",
+          "label": "address payable"
+        },
+        "t_mapping<t_uint256>": {
+          "id": "t_mapping<t_uint256>",
+          "valueType": "t_uint256",
+          "label": "mapping(key => uint256)",
+          "kind": "mapping"
+        }
+      },
+      "storage": [
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initialized",
+          "astId": 8271,
+          "type": "t_bool",
+          "src": "757:24:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initializing",
+          "astId": 8273,
+          "type": "t_bool",
+          "src": "876:25:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "______gap",
+          "astId": 8335,
+          "type": "t_array:50<t_uint256>",
+          "src": "1982:29:35"
+        },
+        {
+          "contract": "Ownable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\ownership\\Ownable.sol",
+          "label": "_owner",
+          "astId": 7631,
+          "type": "t_address",
+          "src": "526:22:31"
+        },
+        {
+          "contract": "Ownable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\ownership\\Ownable.sol",
+          "label": "______gap",
+          "astId": 7744,
+          "type": "t_array:50<t_uint256>",
+          "src": "2471:29:31"
+        },
+        {
+          "contract": "ReentrancyGuard",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\utils\\ReentrancyGuard.sol",
+          "label": "_guardCounter",
+          "astId": 8233,
+          "type": "t_uint256",
+          "src": "733:29:34"
+        },
+        {
+          "contract": "ReentrancyGuard",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\utils\\ReentrancyGuard.sol",
+          "label": "______gap",
+          "astId": 8266,
+          "type": "t_array:50<t_uint256>",
+          "src": "1563:29:34"
+        },
+        {
+          "contract": "PauserRole",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\access\\roles\\PauserRole.sol",
+          "label": "_pausers",
+          "astId": 7228,
+          "type": "t_struct<Roles.Role>",
+          "src": "327:27:28"
+        },
+        {
+          "contract": "PauserRole",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\access\\roles\\PauserRole.sol",
+          "label": "______gap",
+          "astId": 7328,
+          "type": "t_array:50<t_uint256>",
+          "src": "1193:29:28"
+        },
+        {
+          "contract": "Pausable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\lifecycle\\Pausable.sol",
+          "label": "_paused",
+          "astId": 7350,
+          "type": "t_bool",
+          "src": "909:20:29"
+        },
+        {
+          "contract": "Pausable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\lifecycle\\Pausable.sol",
+          "label": "______gap",
+          "astId": 7433,
+          "type": "t_array:50<t_uint256>",
+          "src": "2163:29:29"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "maxBuyPerAddress",
+          "astId": 28,
+          "type": "t_uint256",
+          "src": "906:28:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "referralBP",
+          "astId": 30,
+          "type": "t_uint256",
+          "src": "943:22:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "uniswapEthBP",
+          "astId": 32,
+          "type": "t_uint256",
+          "src": "974:24:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "lidEthBP",
+          "astId": 34,
+          "type": "t_uint256",
+          "src": "1005:20:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "uniswapTokenBP",
+          "astId": 36,
+          "type": "t_uint256",
+          "src": "1034:26:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "presaleTokenBP",
+          "astId": 38,
+          "type": "t_uint256",
+          "src": "1067:26:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "tokenPools",
+          "astId": 41,
+          "type": "t_array:dyn<t_address>",
+          "src": "1100:27:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "tokenPoolBPs",
+          "astId": 44,
+          "type": "t_array:dyn<t_uint256>",
+          "src": "1134:26:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "hardcap",
+          "astId": 46,
+          "type": "t_uint256",
+          "src": "1169:19:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "totalTokens",
+          "astId": 48,
+          "type": "t_uint256",
+          "src": "1195:23:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "hasSentToUniswap",
+          "astId": 50,
+          "type": "t_bool",
+          "src": "1227:28:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "hasIssuedTokens",
+          "astId": 52,
+          "type": "t_bool",
+          "src": "1262:27:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "finalEndTime",
+          "astId": 54,
+          "type": "t_uint256",
+          "src": "1298:24:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "finalEth",
+          "astId": 56,
+          "type": "t_uint256",
+          "src": "1329:20:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "token",
+          "astId": 58,
+          "type": "t_address",
+          "src": "1358:20:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "uniswapRouter",
+          "astId": 60,
+          "type": "t_address",
+          "src": "1385:40:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "timer",
+          "astId": 62,
+          "type": "t_address",
+          "src": "1432:39:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "redeemer",
+          "astId": 64,
+          "type": "t_address",
+          "src": "1478:45:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "access",
+          "astId": 66,
+          "type": "t_address",
+          "src": "1530:41:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "lidFund",
+          "astId": 68,
+          "type": "t_address_payable",
+          "src": "1578:31:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "accountEthDeposit",
+          "astId": 72,
+          "type": "t_mapping<t_uint256>",
+          "src": "1618:49:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "earnedReferrals",
+          "astId": 76,
+          "type": "t_mapping<t_uint256>",
+          "src": "1674:47:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "referralCounts",
+          "astId": 80,
+          "type": "t_mapping<t_uint256>",
+          "src": "1730:46:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "refundedEth",
+          "astId": 84,
+          "type": "t_mapping<t_uint256>",
+          "src": "1785:43:0"
+        },
+        {
+          "contract": "LidSimplifiedPresale",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresale.sol",
+          "label": "isRefunding",
+          "astId": 86,
+          "type": "t_bool",
+          "src": "1837:23:0"
+        }
+      ],
+      "warnings": {
+        "hasConstructor": false,
+        "hasSelfDestruct": false,
+        "hasDelegateCall": false,
+        "hasInitialValuesInDeclarations": false,
+        "uninitializedBaseContracts": [],
+        "storageUncheckedVars": [
+          {
+            "contract": "PauserRole",
+            "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\access\\roles\\PauserRole.sol",
+            "label": "_pausers",
+            "astId": 7228,
+            "type": "t_struct<Roles.Role>",
+            "src": "327:27:28"
+          }
+        ],
+        "storageDiff": []
+      }
+    },
+    "LidSimplifiedPresaleAccess": {
+      "address": "0x5eA4111298FC5812f7ACd612487Cff8183a0897e",
+      "constructorCode": "608060405234801561001057600080fd5b50610970806100206000396000f3fe",
+      "bodyBytecodeHash": "dcf5cd445d3eef700f12919a3384477943bd90cb73ceff49b007863bdcd02525",
+      "localBytecodeHash": "949fafe7876b0be9ea4ac415bb98f0f0a7106ac87cf1494638160c8a416da072",
+      "deployedBytecodeHash": "949fafe7876b0be9ea4ac415bb98f0f0a7106ac87cf1494638160c8a416da072",
+      "types": {
+        "t_bool": {
+          "id": "t_bool",
+          "kind": "elementary",
+          "label": "bool"
+        },
+        "t_uint256": {
+          "id": "t_uint256",
+          "kind": "elementary",
+          "label": "uint256"
+        },
+        "t_array:50<t_uint256>": {
+          "id": "t_array:50<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "50",
+          "kind": "array",
+          "label": "uint256[50]"
+        },
+        "t_address": {
+          "id": "t_address",
+          "kind": "elementary",
+          "label": "address"
+        },
+        "t_array:24<t_uint256>": {
+          "id": "t_array:24<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "24",
+          "kind": "array",
+          "label": "uint256[24]"
+        }
+      },
+      "storage": [
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initialized",
+          "astId": 8135,
+          "type": "t_bool",
+          "src": "757:24:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initializing",
+          "astId": 8137,
+          "type": "t_bool",
+          "src": "876:25:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "______gap",
+          "astId": 8199,
+          "type": "t_array:50<t_uint256>",
+          "src": "1982:29:35"
+        },
+        {
+          "contract": "LidSimplifiedPresaleAccess",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleAccess.sol",
+          "label": "staking",
+          "astId": 772,
+          "type": "t_address",
+          "src": "376:26:1"
+        },
+        {
+          "contract": "LidSimplifiedPresaleAccess",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleAccess.sol",
+          "label": "decayCurve",
+          "astId": 776,
+          "type": "t_array:24<t_uint256>",
+          "src": "411:27:1"
+        }
+      ],
+      "warnings": {
+        "hasConstructor": false,
+        "hasSelfDestruct": false,
+        "hasDelegateCall": false,
+        "hasInitialValuesInDeclarations": false,
+        "uninitializedBaseContracts": []
+      }
+    },
+    "LidSimplifiedPresaleTimer": {
+      "address": "0x9e188B50dEC5Fe0C280ca7F3320adcfA64eb2077",
+      "constructorCode": "608060405261088b806100136000396000f3fe",
+      "bodyBytecodeHash": "76782044c0208deb916f008300012209f36e0b2c5cef99e56d1063544c3087f7",
+      "localBytecodeHash": "895c8480030109c00a590cccc066bdf0c22df7f7e8fe59deb8d871c2fb23478b",
+      "deployedBytecodeHash": "895c8480030109c00a590cccc066bdf0c22df7f7e8fe59deb8d871c2fb23478b",
+      "types": {
+        "t_bool": {
+          "id": "t_bool",
+          "kind": "elementary",
+          "label": "bool"
+        },
+        "t_uint256": {
+          "id": "t_uint256",
+          "kind": "elementary",
+          "label": "uint256"
+        },
+        "t_array:50<t_uint256>": {
+          "id": "t_array:50<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "50",
+          "kind": "array",
+          "label": "uint256[50]"
+        },
+        "t_address": {
+          "id": "t_address",
+          "kind": "elementary",
+          "label": "address"
+        }
+      },
+      "storage": [
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initialized",
+          "astId": 8135,
+          "type": "t_bool",
+          "src": "757:24:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initializing",
+          "astId": 8137,
+          "type": "t_bool",
+          "src": "876:25:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "______gap",
+          "astId": 8199,
+          "type": "t_array:50<t_uint256>",
+          "src": "1982:29:35"
+        },
+        {
+          "contract": "Ownable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\ownership\\Ownable.sol",
+          "label": "_owner",
+          "astId": 7495,
+          "type": "t_address",
+          "src": "526:22:31"
+        },
+        {
+          "contract": "Ownable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\ownership\\Ownable.sol",
+          "label": "______gap",
+          "astId": 7608,
+          "type": "t_array:50<t_uint256>",
+          "src": "2471:29:31"
+        },
+        {
+          "contract": "LidSimplifiedPresaleTimer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleTimer.sol",
+          "label": "startTime",
+          "astId": 1586,
+          "type": "t_uint256",
+          "src": "437:21:3"
+        },
+        {
+          "contract": "LidSimplifiedPresaleTimer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleTimer.sol",
+          "label": "endTime",
+          "astId": 1588,
+          "type": "t_uint256",
+          "src": "465:19:3"
+        },
+        {
+          "contract": "LidSimplifiedPresaleTimer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleTimer.sol",
+          "label": "hardCapTimer",
+          "astId": 1590,
+          "type": "t_uint256",
+          "src": "491:24:3"
+        },
+        {
+          "contract": "LidSimplifiedPresaleTimer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleTimer.sol",
+          "label": "softCap",
+          "astId": 1592,
+          "type": "t_uint256",
+          "src": "522:19:3"
+        },
+        {
+          "contract": "LidSimplifiedPresaleTimer",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidSimplifiedPresaleTimer.sol",
+          "label": "presale",
+          "astId": 1594,
+          "type": "t_address",
+          "src": "548:22:3"
+        }
+      ],
+      "warnings": {
+        "hasConstructor": false,
+        "hasSelfDestruct": false,
+        "hasDelegateCall": false,
+        "hasInitialValuesInDeclarations": false,
+        "uninitializedBaseContracts": []
+      }
+    },
+    "LidTimeLock": {
+      "address": "0xE0335A7a469297B12A1C2970a425f9bF45566BB1",
+      "constructorCode": "6080604052610ec8806100136000396000f3fe",
+      "bodyBytecodeHash": "cf216774f898a128e06f9ee1a694cd965f48430e8096bd5d03576d6ab6559028",
+      "localBytecodeHash": "8dc84741fb65db1fa7cf684868a5fc0f7dde7ba8d59460d62fbe622ecf8f4770",
+      "deployedBytecodeHash": "8dc84741fb65db1fa7cf684868a5fc0f7dde7ba8d59460d62fbe622ecf8f4770",
+      "types": {
+        "t_bool": {
+          "id": "t_bool",
+          "kind": "elementary",
+          "label": "bool"
+        },
+        "t_uint256": {
+          "id": "t_uint256",
+          "kind": "elementary",
+          "label": "uint256"
+        },
+        "t_array:50<t_uint256>": {
+          "id": "t_array:50<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "50",
+          "kind": "array",
+          "label": "uint256[50]"
+        },
+        "t_address": {
+          "id": "t_address",
+          "kind": "elementary",
+          "label": "address"
+        }
+      },
+      "storage": [
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initialized",
+          "astId": 8135,
+          "type": "t_bool",
+          "src": "757:24:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initializing",
+          "astId": 8137,
+          "type": "t_bool",
+          "src": "876:25:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "______gap",
+          "astId": 8199,
+          "type": "t_array:50<t_uint256>",
+          "src": "1982:29:35"
+        },
+        {
+          "contract": "Ownable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\ownership\\Ownable.sol",
+          "label": "_owner",
+          "astId": 7495,
+          "type": "t_address",
+          "src": "526:22:31"
+        },
+        {
+          "contract": "Ownable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\ownership\\Ownable.sol",
+          "label": "______gap",
+          "astId": 7608,
+          "type": "t_array:50<t_uint256>",
+          "src": "2471:29:31"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "releaseInterval",
+          "astId": 1725,
+          "type": "t_uint256",
+          "src": "498:27:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "releaseStart",
+          "astId": 1727,
+          "type": "t_uint256",
+          "src": "532:24:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "releaseBP",
+          "astId": 1729,
+          "type": "t_uint256",
+          "src": "563:21:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "startingTokens",
+          "astId": 1731,
+          "type": "t_uint256",
+          "src": "593:26:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "claimedTokens",
+          "astId": 1733,
+          "type": "t_uint256",
+          "src": "626:25:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "token",
+          "astId": 1735,
+          "type": "t_address",
+          "src": "660:20:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "releaseWallet",
+          "astId": 1737,
+          "type": "t_address",
+          "src": "689:21:4"
+        }
+      ],
+      "warnings": {
+        "hasConstructor": false,
+        "hasSelfDestruct": false,
+        "hasDelegateCall": false,
+        "hasInitialValuesInDeclarations": false,
+        "uninitializedBaseContracts": []
+      }
+    },
+    "LidTimeLockEcosystem": {
+      "address": "0xD701FA25389D9032f950d02B6F14961a15f36854",
+      "constructorCode": "6080604052610ec8806100136000396000f3fe",
+      "bodyBytecodeHash": "cf216774f898a128e06f9ee1a694cd965f48430e8096bd5d03576d6ab6559028",
+      "localBytecodeHash": "8dc84741fb65db1fa7cf684868a5fc0f7dde7ba8d59460d62fbe622ecf8f4770",
+      "deployedBytecodeHash": "8dc84741fb65db1fa7cf684868a5fc0f7dde7ba8d59460d62fbe622ecf8f4770",
+      "types": {
+        "t_bool": {
+          "id": "t_bool",
+          "kind": "elementary",
+          "label": "bool"
+        },
+        "t_uint256": {
+          "id": "t_uint256",
+          "kind": "elementary",
+          "label": "uint256"
+        },
+        "t_array:50<t_uint256>": {
+          "id": "t_array:50<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "50",
+          "kind": "array",
+          "label": "uint256[50]"
+        },
+        "t_address": {
+          "id": "t_address",
+          "kind": "elementary",
+          "label": "address"
+        }
+      },
+      "storage": [
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initialized",
+          "astId": 8135,
+          "type": "t_bool",
+          "src": "757:24:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initializing",
+          "astId": 8137,
+          "type": "t_bool",
+          "src": "876:25:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "______gap",
+          "astId": 8199,
+          "type": "t_array:50<t_uint256>",
+          "src": "1982:29:35"
+        },
+        {
+          "contract": "Ownable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\ownership\\Ownable.sol",
+          "label": "_owner",
+          "astId": 7495,
+          "type": "t_address",
+          "src": "526:22:31"
+        },
+        {
+          "contract": "Ownable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\ownership\\Ownable.sol",
+          "label": "______gap",
+          "astId": 7608,
+          "type": "t_array:50<t_uint256>",
+          "src": "2471:29:31"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "releaseInterval",
+          "astId": 1725,
+          "type": "t_uint256",
+          "src": "498:27:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "releaseStart",
+          "astId": 1727,
+          "type": "t_uint256",
+          "src": "532:24:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "releaseBP",
+          "astId": 1729,
+          "type": "t_uint256",
+          "src": "563:21:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "startingTokens",
+          "astId": 1731,
+          "type": "t_uint256",
+          "src": "593:26:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "claimedTokens",
+          "astId": 1733,
+          "type": "t_uint256",
+          "src": "626:25:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "token",
+          "astId": 1735,
+          "type": "t_address",
+          "src": "660:20:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "releaseWallet",
+          "astId": 1737,
+          "type": "t_address",
+          "src": "689:21:4"
+        }
+      ],
+      "warnings": {
+        "hasConstructor": false,
+        "hasSelfDestruct": false,
+        "hasDelegateCall": false,
+        "hasInitialValuesInDeclarations": false,
+        "uninitializedBaseContracts": []
+      }
+    },
+    "LidTimeLockFee": {
+      "address": "0x3e7916250de79A54755079BB21b40C3C1d642Fc1",
+      "constructorCode": "6080604052610ec8806100136000396000f3fe",
+      "bodyBytecodeHash": "cf216774f898a128e06f9ee1a694cd965f48430e8096bd5d03576d6ab6559028",
+      "localBytecodeHash": "8dc84741fb65db1fa7cf684868a5fc0f7dde7ba8d59460d62fbe622ecf8f4770",
+      "deployedBytecodeHash": "8dc84741fb65db1fa7cf684868a5fc0f7dde7ba8d59460d62fbe622ecf8f4770",
+      "types": {
+        "t_bool": {
+          "id": "t_bool",
+          "kind": "elementary",
+          "label": "bool"
+        },
+        "t_uint256": {
+          "id": "t_uint256",
+          "kind": "elementary",
+          "label": "uint256"
+        },
+        "t_array:50<t_uint256>": {
+          "id": "t_array:50<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "50",
+          "kind": "array",
+          "label": "uint256[50]"
+        },
+        "t_address": {
+          "id": "t_address",
+          "kind": "elementary",
+          "label": "address"
+        }
+      },
+      "storage": [
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initialized",
+          "astId": 8135,
+          "type": "t_bool",
+          "src": "757:24:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "initializing",
+          "astId": 8137,
+          "type": "t_bool",
+          "src": "876:25:35"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin\\upgrades\\contracts\\Initializable.sol",
+          "label": "______gap",
+          "astId": 8199,
+          "type": "t_array:50<t_uint256>",
+          "src": "1982:29:35"
+        },
+        {
+          "contract": "Ownable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\ownership\\Ownable.sol",
+          "label": "_owner",
+          "astId": 7495,
+          "type": "t_address",
+          "src": "526:22:31"
+        },
+        {
+          "contract": "Ownable",
+          "path": "@openzeppelin\\contracts-ethereum-package\\contracts\\ownership\\Ownable.sol",
+          "label": "______gap",
+          "astId": 7608,
+          "type": "t_array:50<t_uint256>",
+          "src": "2471:29:31"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "releaseInterval",
+          "astId": 1725,
+          "type": "t_uint256",
+          "src": "498:27:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "releaseStart",
+          "astId": 1727,
+          "type": "t_uint256",
+          "src": "532:24:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "releaseBP",
+          "astId": 1729,
+          "type": "t_uint256",
+          "src": "563:21:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "startingTokens",
+          "astId": 1731,
+          "type": "t_uint256",
+          "src": "593:26:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "claimedTokens",
+          "astId": 1733,
+          "type": "t_uint256",
+          "src": "626:25:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "token",
+          "astId": 1735,
+          "type": "t_address",
+          "src": "660:20:4"
+        },
+        {
+          "contract": "LidTimeLock",
+          "path": "..\\..\\..\\D\\LID\\novamining\\lid-novamining-contracts\\contracts\\LidTimeLock.sol",
+          "label": "releaseWallet",
+          "astId": 1737,
+          "type": "t_address",
+          "src": "689:21:4"
+        }
+      ],
+      "warnings": {
+        "hasConstructor": false,
+        "hasSelfDestruct": false,
+        "hasDelegateCall": false,
+        "hasInitialValuesInDeclarations": false,
+        "uninitializedBaseContracts": []
+      }
+    }
+  },
+  "solidityLibs": {},
+  "proxies": {
+    "lid-simplified-presale-contracts/LidSimplifiedPresaleTimer": [
+      {
+        "address": "0x78c3C418940aCB43b09441CFaE4FA634be8a0A74",
+        "version": "1.0.0",
+        "implementation": "0x9e188B50dEC5Fe0C280ca7F3320adcfA64eb2077",
+        "admin": "0x1644c0893E567E1dB0b306d8022bBCbafce1D5EA",
+        "kind": "Upgradeable"
+      }
+    ],
+    "lid-simplified-presale-contracts/LidSimplifiedPresaleRedeemer": [
+      {
+        "address": "0x45B55CD322dD64CBd18A25684ed2FA337868B8cc",
+        "version": "1.0.0",
+        "implementation": "0x800933440Fe46A5f74CC3F88165bf0727664e0e8",
+        "admin": "0x1644c0893E567E1dB0b306d8022bBCbafce1D5EA",
+        "kind": "Upgradeable"
+      }
+    ],
+    "lid-simplified-presale-contracts/LidTimeLock": [
+      {
+        "address": "0xa74a15FAEc495B9a9b83651d4d24DB97aDc0D92C",
+        "version": "1.0.0",
+        "implementation": "0xE0335A7a469297B12A1C2970a425f9bF45566BB1",
+        "admin": "0x1644c0893E567E1dB0b306d8022bBCbafce1D5EA",
+        "kind": "Upgradeable"
+      }
+    ],
+    "lid-simplified-presale-contracts/LidTimeLockEcosystem": [
+      {
+        "address": "0x6AbF40EAeAC929Ba6Da2508Dd71a976C63eC19fF",
+        "version": "1.0.0",
+        "implementation": "0xD701FA25389D9032f950d02B6F14961a15f36854",
+        "admin": "0x1644c0893E567E1dB0b306d8022bBCbafce1D5EA",
+        "kind": "Upgradeable"
+      }
+    ],
+    "lid-simplified-presale-contracts/LidTimeLockFee": [
+      {
+        "address": "0xDdc8730d543a00EFc075721190934cB2e9Cf0745",
+        "version": "1.0.0",
+        "implementation": "0x3e7916250de79A54755079BB21b40C3C1d642Fc1",
+        "admin": "0x1644c0893E567E1dB0b306d8022bBCbafce1D5EA",
+        "kind": "Upgradeable"
+      }
+    ],
+    "lid-simplified-presale-contracts/LidSimplifiedPresale": [
+      {
+        "address": "0x88366e3bb908345CaFCCCAAEe3F1e501373D179D",
+        "version": "1.0.0",
+        "implementation": "0xc34ee85DAF51bc7ac9b6CBBb7882B41b7385Fa01",
+        "admin": "0x1644c0893E567E1dB0b306d8022bBCbafce1D5EA",
+        "kind": "Upgradeable"
+      }
+    ]
+  },
+  "manifestVersion": "2.2",
+  "version": "1.0.0",
+  "proxyAdmin": {
+    "address": "0x1644c0893E567E1dB0b306d8022bBCbafce1D5EA"
+  }
+}
